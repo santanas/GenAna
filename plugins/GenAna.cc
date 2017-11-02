@@ -88,6 +88,8 @@ class GenAna : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
   edm::Service<TFileService> fs_;
   
   edm::EDGetTokenT<reco::GenParticleCollection> genPartInputToken_;
+  edm::EDGetTokenT<reco::GenJetCollection> genJetsAK4InputToken_;
+  edm::EDGetTokenT<reco::GenJetCollection> genJetsAK8InputToken_;
 
   TH1F *h1_R;
   TH1F *h1_Res1_mass,*h1_Res1_pt,*h1_Res1_eta,*h1_Res1_phi;
@@ -101,6 +103,42 @@ class GenAna : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 
   TH1F *h1_P1P2_Angle;
   TH1F *h1_P1P2_DeltaR;
+
+  TH1F *h1_AK8jet1_pt;
+  TH1F *h1_AK8jet1_eta;
+  TH1F *h1_AK8jet1_phi;
+  TH1F *h1_AK8jet1_mass;
+
+  TH1F *h1_AK8jet2_pt;
+  TH1F *h1_AK8jet2_eta;
+  TH1F *h1_AK8jet2_phi;
+  TH1F *h1_AK8jet2_mass;
+
+  TH1F *h1_Mjj;
+  TH1F *h1_Mjj_sel;
+  TH1F *h1_DeltaEtajj;
+
+  TH1F *h1_AK4jet1_pt;
+  TH1F *h1_AK4jet1_eta;
+  TH1F *h1_AK4jet1_phi;
+  TH1F *h1_AK4jet1_mass;
+
+  TH1F *h1_AK4jet2_pt;
+  TH1F *h1_AK4jet2_eta;
+  TH1F *h1_AK4jet2_phi;
+  TH1F *h1_AK4jet2_mass;
+
+  TH1F *h1_AK4jet3_pt;
+  TH1F *h1_AK4jet3_eta;
+  TH1F *h1_AK4jet3_phi;
+  TH1F *h1_AK4jet3_mass;
+
+  TH1F *h1_Mjjj;
+  TH1F *h1_Mjjj_sel;
+  TH1F *h1_DeltaEtajj12;
+  TH1F *h1_DeltaEtajj13;
+  TH1F *h1_DeltaEtajj23;
+  TH1F *h1_pt3_over_Mjjj;
 
 };
 
@@ -121,6 +159,10 @@ GenAna::GenAna(const edm::ParameterSet& iConfig)
    //now do what ever initialization is needed
   usesResource("TFileService");
   genPartInputToken_ = (consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genParticlesInputTag")));
+  genPartInputToken_ = (consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genParticlesInputTag")));
+
+  genJetsAK4InputToken_ = (consumes<reco::GenJetCollection>(iConfig.getParameter<edm::InputTag>("genJetsAK4InputTag")));
+  genJetsAK8InputToken_ = (consumes<reco::GenJetCollection>(iConfig.getParameter<edm::InputTag>("genJetsAK8InputTag")));
 }
 
 
@@ -156,6 +198,14 @@ GenAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    edm::Handle<reco::GenParticleCollection> genParticles;
    if (!iEvent.isRealData())
      iEvent.getByToken(genPartInputToken_, genParticles);
+
+   edm::Handle<reco::GenJetCollection> genJetsAK4;
+   if (!iEvent.isRealData())
+     iEvent.getByToken(genJetsAK4InputToken_,genJetsAK4);
+
+   edm::Handle<reco::GenJetCollection> genJetsAK8;
+   if (!iEvent.isRealData())
+     iEvent.getByToken(genJetsAK8InputToken_,genJetsAK8);
 
 
    TLorentzVector Res1, Res2, P1, P2, P3;
@@ -205,9 +255,12 @@ GenAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 }
      }
 
-     float R = Res2.M() / Res1.M();
+     if(Res1.M()>0)
+       {
+	 float R = Res2.M() / Res1.M();
+	 h1_R->Fill(R);
+       }
 
-     h1_R->Fill(R);
      h1_Res1_mass->Fill(Res1.M());
      h1_Res1_pt->Fill(Res1.Pt());
      h1_Res1_eta->Fill(Res1.Eta());
@@ -239,7 +292,105 @@ GenAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
      h1_P1P2_Angle->Fill(P1.Angle(P2.BoostVector()));
      h1_P1P2_DeltaR->Fill(P1.DeltaR(P2));
 
-   }
+     //AK8 gen jets
+     if( genJetsAK8.isValid() && genJetsAK8->size()>=2 ) {
+      
+       TLorentzVector AK8Jet1, AK8Jet2, Dijet;
+
+       AK8Jet1.SetPtEtaPhiM(genJetsAK8->at(0).pt(),genJetsAK8->at(0).eta(),genJetsAK8->at(0).phi(),genJetsAK8->at(0).mass());	 
+       AK8Jet2.SetPtEtaPhiM(genJetsAK8->at(1).pt(),genJetsAK8->at(1).eta(),genJetsAK8->at(1).phi(),genJetsAK8->at(1).mass());	 
+       Dijet = AK8Jet1 + AK8Jet2;
+
+       float DeltaEtaJJ = fabs(AK8Jet1.Eta()-AK8Jet2.Eta());
+
+       h1_AK8jet1_pt->Fill(AK8Jet1.Pt());
+       h1_AK8jet1_eta->Fill(AK8Jet1.Eta());
+       h1_AK8jet1_phi->Fill(AK8Jet1.Phi());
+       h1_AK8jet1_mass->Fill(AK8Jet1.M());
+
+       h1_AK8jet2_pt->Fill(AK8Jet2.Pt());
+       h1_AK8jet2_eta->Fill(AK8Jet2.Eta());
+       h1_AK8jet2_phi->Fill(AK8Jet2.Phi());
+       h1_AK8jet2_mass->Fill(AK8Jet2.M());
+
+       h1_Mjj->Fill(Dijet.M());
+       h1_DeltaEtajj->Fill(DeltaEtaJJ);
+
+       //dijet selection
+       if( AK8Jet1.Pt() > 50 && fabs(AK8Jet1.Eta()) < 2.5 && 
+	   AK8Jet2.Pt() > 50 && fabs(AK8Jet2.Eta()) < 2.5 && 
+	   DeltaEtaJJ < 1.3)
+	 {
+	   h1_Mjj_sel->Fill(Dijet.M());
+	 }
+
+       /*
+	 for( reco::GenJetCollection::const_iterator it = genJetsAK8->begin(); it != genJetsAK8->end(); ++it ) {
+	 } 
+       */      
+       
+     }//gen jet ak8 valid
+
+     //AK4 gen jets
+     if( genJetsAK4.isValid() && genJetsAK4->size()>=3 ) {
+      
+       TLorentzVector AK4Jet1, AK4Jet2, AK4Jet3, Trijet, Dijet12, Dijet13, Dijet23;
+
+       AK4Jet1.SetPtEtaPhiM(genJetsAK4->at(0).pt(),genJetsAK4->at(0).eta(),genJetsAK4->at(0).phi(),genJetsAK4->at(0).mass());	 
+       AK4Jet2.SetPtEtaPhiM(genJetsAK4->at(1).pt(),genJetsAK4->at(1).eta(),genJetsAK4->at(1).phi(),genJetsAK4->at(1).mass());	 
+       AK4Jet3.SetPtEtaPhiM(genJetsAK4->at(2).pt(),genJetsAK4->at(2).eta(),genJetsAK4->at(2).phi(),genJetsAK4->at(2).mass());	 
+       Trijet = AK4Jet1 + AK4Jet2 + AK4Jet3;
+
+       float DeltaEtaJJ12 = fabs(AK4Jet1.Eta()-AK4Jet2.Eta());
+       float DeltaEtaJJ13 = fabs(AK4Jet1.Eta()-AK4Jet3.Eta());
+       float DeltaEtaJJ23 = fabs(AK4Jet2.Eta()-AK4Jet3.Eta());
+
+       float pT3_over_mjjj = AK4Jet3.Pt() / Trijet.M();
+
+       h1_AK4jet1_pt->Fill(AK4Jet1.Pt());
+       h1_AK4jet1_eta->Fill(AK4Jet1.Eta());
+       h1_AK4jet1_phi->Fill(AK4Jet1.Phi());
+       h1_AK4jet1_mass->Fill(AK4Jet1.M());
+
+       h1_AK4jet2_pt->Fill(AK4Jet2.Pt());
+       h1_AK4jet2_eta->Fill(AK4Jet2.Eta());
+       h1_AK4jet2_phi->Fill(AK4Jet2.Phi());
+       h1_AK4jet2_mass->Fill(AK4Jet2.M());
+
+       h1_AK4jet3_pt->Fill(AK4Jet3.Pt());
+       h1_AK4jet3_eta->Fill(AK4Jet3.Eta());
+       h1_AK4jet3_phi->Fill(AK4Jet3.Phi());
+       h1_AK4jet3_mass->Fill(AK4Jet3.M());
+
+       h1_Mjjj->Fill(Trijet.M());
+
+       h1_DeltaEtajj12->Fill(DeltaEtaJJ12);
+       h1_DeltaEtajj13->Fill(DeltaEtaJJ13);
+       h1_DeltaEtajj23->Fill(DeltaEtaJJ23);
+
+       h1_pt3_over_Mjjj->Fill(pT3_over_mjjj);
+
+       //trijet selection
+       if( AK4Jet1.Pt() > 50 && fabs(AK4Jet1.Eta()) < 2.5 && 
+	   AK4Jet2.Pt() > 50 && fabs(AK4Jet2.Eta()) < 2.5 && 
+	   AK4Jet3.Pt() > 50 && fabs(AK4Jet3.Eta()) < 2.5 && 
+	   AK4Jet3.Pt() > 50 && fabs(AK4Jet3.Eta()) < 2.5 && 
+	   DeltaEtaJJ12 < 1.2 &&
+	   DeltaEtaJJ13 < 1.9 &&
+	   pT3_over_mjjj > 0.2
+	   )
+	 {
+	   h1_Mjjj_sel->Fill(Trijet.M());
+	 }
+
+       /*
+	 for( reco::GenJetCollection::const_iterator it = genJetsAK8->begin(); it != genJetsAK8->end(); ++it ) {
+	 } 
+       */      
+       
+     }//gen jet ak8 valid
+
+   }//gen particles valid
 
 }
 
@@ -282,6 +433,41 @@ GenAna::beginJob()
   h1_P1P2_Angle = fs_->make<TH1F>("h1_P1P2_Angle","h1_P1P2_Angle",1000,0,6.30);
   h1_P1P2_DeltaR = fs_->make<TH1F>("h1_P1P2_DeltaR","h1_P1P2_DeltaR",1000,0,6.30);
 
+  h1_AK8jet1_mass = fs_->make<TH1F>("h1_AK8jet1_mass","h1_AK8jet1_mass",1000,0,10000);
+  h1_AK8jet1_pt = fs_->make<TH1F>("h1_AK8jet1_pt","h1_AK8jet1_pt",1000,0,10000);
+  h1_AK8jet1_eta = fs_->make<TH1F>("h1_AK8jet1_eta","h1_AK8jet1_eta",100,-6,6);
+  h1_AK8jet1_phi = fs_->make<TH1F>("h1_AK8jet1_phi","h1_AK8jet1_phi",100,-3.15,3.15);
+
+  h1_AK8jet2_mass = fs_->make<TH1F>("h1_AK8jet2_mass","h1_AK8jet2_mass",1000,0,10000);
+  h1_AK8jet2_pt = fs_->make<TH1F>("h1_AK8jet2_pt","h1_AK8jet2_pt",1000,0,10000);
+  h1_AK8jet2_eta = fs_->make<TH1F>("h1_AK8jet2_eta","h1_AK8jet2_eta",100,-6,6);
+  h1_AK8jet2_phi = fs_->make<TH1F>("h1_AK8jet2_phi","h1_AK8jet2_phi",100,-3.15,3.15);
+
+  h1_Mjj = fs_->make<TH1F>("h1_Mjj","h1_Mjj",1000,0,10000);
+  h1_Mjj_sel = fs_->make<TH1F>("h1_Mjj_sel","h1_Mjj_sel",1000,0,10000);
+  h1_DeltaEtajj = fs_->make<TH1F>("h1_DeltaEtajj","h1_DeltaEtajj",100,0,6);
+
+  h1_AK4jet1_mass = fs_->make<TH1F>("h1_AK4jet1_mass","h1_AK4jet1_mass",1000,0,10000);
+  h1_AK4jet1_pt = fs_->make<TH1F>("h1_AK4jet1_pt","h1_AK4jet1_pt",1000,0,10000);
+  h1_AK4jet1_eta = fs_->make<TH1F>("h1_AK4jet1_eta","h1_AK4jet1_eta",100,-6,6);
+  h1_AK4jet1_phi = fs_->make<TH1F>("h1_AK4jet1_phi","h1_AK4jet1_phi",100,-3.15,3.15);
+
+  h1_AK4jet2_mass = fs_->make<TH1F>("h1_AK4jet2_mass","h1_AK4jet2_mass",1000,0,10000);
+  h1_AK4jet2_pt = fs_->make<TH1F>("h1_AK4jet2_pt","h1_AK4jet2_pt",1000,0,10000);
+  h1_AK4jet2_eta = fs_->make<TH1F>("h1_AK4jet2_eta","h1_AK4jet2_eta",100,-6,6);
+  h1_AK4jet2_phi = fs_->make<TH1F>("h1_AK4jet2_phi","h1_AK4jet2_phi",100,-3.15,3.15);
+
+  h1_AK4jet3_mass = fs_->make<TH1F>("h1_AK4jet3_mass","h1_AK4jet3_mass",1000,0,10000);
+  h1_AK4jet3_pt = fs_->make<TH1F>("h1_AK4jet3_pt","h1_AK4jet3_pt",1000,0,10000);
+  h1_AK4jet3_eta = fs_->make<TH1F>("h1_AK4jet3_eta","h1_AK4jet3_eta",100,-6,6);
+  h1_AK4jet3_phi = fs_->make<TH1F>("h1_AK4jet3_phi","h1_AK4jet3_phi",100,-3.15,3.15);
+
+  h1_Mjjj = fs_->make<TH1F>("h1_Mjjj","h1_Mjjj",1000,0,10000);
+  h1_Mjjj_sel = fs_->make<TH1F>("h1_Mjjj_sel","h1_Mjjj_sel",1000,0,10000);
+  h1_DeltaEtajj12 = fs_->make<TH1F>("h1_DeltaEtajj12","h1_DeltaEtajj12",100,0,6);
+  h1_DeltaEtajj13 = fs_->make<TH1F>("h1_DeltaEtajj13","h1_DeltaEtajj13",100,0,6);
+  h1_DeltaEtajj23 = fs_->make<TH1F>("h1_DeltaEtajj23","h1_DeltaEtajj23",100,0,6);
+  h1_pt3_over_Mjjj = fs_->make<TH1F>("h1_pt3_over_Mjjj","h1_pt3_over_Mjjj",100,0,1);
 }
 
 // ------------ method called once each job just after ending the event loop  ------------

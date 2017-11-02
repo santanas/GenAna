@@ -10,7 +10,8 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
     fileNames = cms.untracked.vstring(
-        'root://eoscms///eos/cms/store/cmst3/user/santanas/MCsamples/TrijetRes_g_ggg_BP2_testV2/TrijetRes_g_ggg_BP2_testV2_MGKK2000R0p1_slc6_amd64_gcc481_CMSSW_7_1_30_GEN.root'
+        #'root://eoscms///eos/cms/store/cmst3/user/santanas/MCsamples/TrijetRes_g_ggg_BP2_testV2/TrijetRes_g_ggg_BP2_testV2_MGKK2000R0p1_slc6_amd64_gcc481_CMSSW_7_1_30_GEN.root'
+        'root://eoscms///eos/cms/store/cmst3/user/santanas/MCsamples/TrijetRes_g_ggg_BP2_testV2/TrijetRes_g_ggg_BP2_testV2_MGKK2000R0p7_slc6_amd64_gcc481_CMSSW_7_1_30_GEN.root'
     )
 )
 
@@ -21,7 +22,9 @@ process.TFileService=cms.Service("TFileService",
                                  )
 
 process.genAnalyzer = cms.EDAnalyzer('GenAna',
-                                     genParticlesInputTag = cms.InputTag('genParticles')
+                                     genParticlesInputTag = cms.InputTag('genParticles'),
+                                     genJetsAK4InputTag = cms.InputTag('ak4GenJets'),
+                                     genJetsAK8InputTag = cms.InputTag('ak8GenJets')
 )
 
 
