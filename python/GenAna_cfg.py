@@ -20,9 +20,17 @@ process.TFileService=cms.Service("TFileService",
                                  closeFileFast = cms.untracked.bool(True)
                                  )
 
-process.demo = cms.EDAnalyzer('GenAna',
-                              genParticlesInputTag = cms.InputTag('genParticles')
+process.genAnalyzer = cms.EDAnalyzer('GenAna',
+                                     genParticlesInputTag = cms.InputTag('genParticles')
 )
 
 
-process.p = cms.Path(process.demo)
+#process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
+#process.printTree = cms.EDAnalyzer("ParticleListDrawer",
+#  maxEventsToPrint = cms.untracked.int32(1),
+#  printVertex = cms.untracked.bool(False),
+#  printOnlyHardInteraction = cms.untracked.bool(False), # Print only status=3 particles. This will not work for Pythia8, which does not have any such particles.                               #  
+#  src = cms.InputTag("genParticles")
+#)
+
+process.p = cms.Path(process.genAnalyzer)

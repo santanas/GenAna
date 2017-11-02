@@ -279,8 +279,8 @@ GenAna::beginJob()
   h1_Res1_Res2P3_massDiff = fs_->make<TH1F>("h1_Res1_Res2P3_massDiff","h1_Res1_Res2P3_massDiff",1000,-100,100);
   h1_Res2_P1P2_massDiff = fs_->make<TH1F>("h1_Res2_P1P2_massDiff","h1_Res2_P1P2_massDiff",1000,-100,100);
 
-  h1_P1P2_Angle = fs_->make<TH1F>("h1_P1P2_Angle","h1_P1P2_Angle",1000,-3.15,3.15);
-  h1_P1P2_DeltaR = fs_->make<TH1F>("h1_P1P2_DeltaR","h1_P1P2_DeltaR",1000,0,6);
+  h1_P1P2_Angle = fs_->make<TH1F>("h1_P1P2_Angle","h1_P1P2_Angle",1000,0,6.30);
+  h1_P1P2_DeltaR = fs_->make<TH1F>("h1_P1P2_DeltaR","h1_P1P2_DeltaR",1000,0,6.30);
 
 }
 
