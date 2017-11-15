@@ -104,6 +104,8 @@ class GenAna : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
   TH1F *h1_P1P2_Angle;
   TH1F *h1_P1P2_DeltaR;
 
+  TH1F *h1_HT;
+
   TH1F *h1_Mjj;
   TH1F *h1_Mjj_sel;
   TH1F *h1_DeltaEtajj;
@@ -292,6 +294,18 @@ GenAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
      h1_P1P2_Angle->Fill(P1.Angle(P2.BoostVector()));
      h1_P1P2_DeltaR->Fill(P1.DeltaR(P2));
 
+
+     //HT 
+     float HT_AK8Jets = 0;
+     for( reco::GenJetCollection::const_iterator it = genJetsAK8->begin(); it != genJetsAK8->end(); ++it ) 
+       {
+	 
+	 if( it->pt()>30 && fabs(it->eta())<3 )
+	   HT_AK8Jets += it->pt();
+       } 
+     
+     h1_HT->Fill(HT_AK8Jets);      
+     
      //AK8 gen jets - dijet sel
      if( genJetsAK8.isValid() && genJetsAK8->size()>=2 ) {
       
@@ -317,9 +331,10 @@ GenAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        h1_DeltaEtajj->Fill(DeltaEtaJJ);
 
        //dijet selection
-       if( AK8Jet1.Pt() > 50 && fabs(AK8Jet1.Eta()) < 2.5 && 
-	   AK8Jet2.Pt() > 50 && fabs(AK8Jet2.Eta()) < 2.5 && 
-	   DeltaEtaJJ < 1.3)
+       if( AK8Jet1.Pt() > 60 && fabs(AK8Jet1.Eta()) < 2.5 && 
+	   AK8Jet2.Pt() > 30 && fabs(AK8Jet2.Eta()) < 2.5 && 
+	   DeltaEtaJJ < 1.3 &&
+	   HT_AK8Jets > 250)
 	 {
 	   h1_Mjj_sel->Fill(Dijet.M());
 	 }
@@ -355,7 +370,8 @@ GenAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	     AK8Jet3.Pt() > 50 && fabs(AK8Jet3.Eta()) < 2.5 && 
 	     DeltaEtaJJ12 < 1.2 &&
 	     DeltaEtaJJ13 < 1.9 &&
-	     pT3_over_mjjj > 0.2
+	     pT3_over_mjjj > 0.2 && 
+	     HT_AK8Jets > 250
 	     )
 	   {
 	     h1_Mjjj_sel->Fill(Trijet.M());
@@ -439,6 +455,8 @@ GenAna::beginJob()
 
   h1_P1P2_Angle = fs_->make<TH1F>("h1_P1P2_Angle","h1_P1P2_Angle",1000,0,6.30);
   h1_P1P2_DeltaR = fs_->make<TH1F>("h1_P1P2_DeltaR","h1_P1P2_DeltaR",1000,0,6.30);
+
+  h1_HT = fs_->make<TH1F>("h1_HT","h1_HT",1000,0,10000);
 
   h1_Mjj = fs_->make<TH1F>("h1_Mjj","h1_Mjj",1000,0,10000);
   h1_Mjj_sel = fs_->make<TH1F>("h1_Mjj_sel","h1_Mjj_sel",1000,0,10000);

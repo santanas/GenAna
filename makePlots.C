@@ -102,33 +102,33 @@ void makePlots(){
 
   //load histograms
 
-  TFile *file_M500_R0p1 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-500_R-0p1_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M500_R0p2 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-500_R-0p2_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M500_R0p3 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-500_R-0p3_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M500_R0p5 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-500_R-0p5_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M500_R0p7 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-500_R-0p7_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M500_R0p9 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-500_R-0p9_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M500_R0p1 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-500_R-0p1_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M500_R0p2 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-500_R-0p2_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M500_R0p3 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-500_R-0p3_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M500_R0p5 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-500_R-0p5_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M500_R0p7 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-500_R-0p7_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M500_R0p9 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-500_R-0p9_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
 
-  TFile *file_M1000_R0p1 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-1000_R-0p1_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M1000_R0p2 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-1000_R-0p2_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M1000_R0p3 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-1000_R-0p3_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M1000_R0p5 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-1000_R-0p5_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M1000_R0p7 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-1000_R-0p7_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M1000_R0p9 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-1000_R-0p9_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M1000_R0p1 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-1000_R-0p1_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M1000_R0p2 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-1000_R-0p2_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M1000_R0p3 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-1000_R-0p3_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M1000_R0p5 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-1000_R-0p5_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M1000_R0p7 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-1000_R-0p7_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M1000_R0p9 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-1000_R-0p9_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
 
-  TFile *file_M4000_R0p1 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-4000_R-0p1_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M4000_R0p2 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-4000_R-0p2_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M4000_R0p3 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-4000_R-0p3_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M4000_R0p5 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-4000_R-0p5_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M4000_R0p7 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-4000_R-0p7_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M4000_R0p9 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-4000_R-0p9_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M4000_R0p1 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-4000_R-0p1_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M4000_R0p2 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-4000_R-0p2_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M4000_R0p3 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-4000_R-0p3_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M4000_R0p5 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-4000_R-0p5_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M4000_R0p7 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-4000_R-0p7_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M4000_R0p9 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-4000_R-0p9_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
 
-  TFile *file_M8000_R0p1 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-8000_R-0p1_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M8000_R0p2 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-8000_R-0p2_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M8000_R0p3 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-8000_R-0p3_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M8000_R0p5 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-8000_R-0p5_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M8000_R0p7 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-8000_R-0p7_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
-  TFile *file_M8000_R0p9 = TFile::Open("Output_Res1ToRes2GluTo3Glu/Res1ToRes2GluTo3Glu_M1-8000_R-0p9_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M8000_R0p1 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-8000_R-0p1_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M8000_R0p2 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-8000_R-0p2_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M8000_R0p3 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-8000_R-0p3_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M8000_R0p5 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-8000_R-0p5_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M8000_R0p7 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-8000_R-0p7_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
+  TFile *file_M8000_R0p9 = TFile::Open("Output_Res1ToRes2GluTo3Glu_V2/Res1ToRes2GluTo3Glu_M1-8000_R-0p9_slc6_amd64_gcc481_CMSSW_7_1_30_GEN_ANALYSIS.root");
 
   std::vector< TFile* > Vec_Files;
 
