@@ -18,7 +18,7 @@ cd santanas/GenAna
 ```
 
 3) Edit and compile code
-* Analyzer = plugins/GenAna.c
+* Analyzer = plugins/GenAna.cc
 ```
 scram b
 ```
