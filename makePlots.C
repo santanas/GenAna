@@ -60,7 +60,7 @@ void drawEff(string output, std::vector< TH1F* > DenVector, std::vector< TH1F* >
 
   TCanvas c1;
 
-  TH2F *h2_efficiency = new TH2F("h2_efficiency",selection.c_str(),100,0,10000,21,-0.025,1.025);
+  TH2F *h2_efficiency = new TH2F("h2_efficiency",selection.c_str(),50,0,10000,21,-0.025,1.025);
 
   for(int k=0;k<DenVector.size();k++)
     {
@@ -81,6 +81,7 @@ void drawEff(string output, std::vector< TH1F* > DenVector, std::vector< TH1F* >
   h2_efficiency->GetZaxis()->SetTitle("Selection efficiency");
   h2_efficiency->GetXaxis()->SetTitle(xaxisTitle.c_str());
   h2_efficiency->GetYaxis()->SetTitle(yaxisTitle.c_str());
+  h2_efficiency->SetMarkerSize(1.5);
 
   h2_efficiency->Draw("colztext");
 
