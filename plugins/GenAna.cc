@@ -130,6 +130,8 @@ class GenAna : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
   TH1F *h1_AK8jet4_phi;
   TH1F *h1_AK8jet4_mass;
 
+  TH1F *h1_AK8jet12_largestMass;
+
   TH1F *h1_Mjjj;
   TH1F *h1_Mjjj_match;
   TH1F *h1_Mjjj_sel;
@@ -330,6 +332,14 @@ GenAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        h1_Mjj->Fill(Dijet.M());
        h1_DeltaEtajj->Fill(DeltaEtaJJ);
 
+       float largestJetMass = -1 ;
+       if (AK8Jet1.M() > AK8Jet2.M() )	
+	 largestJetMass=AK8Jet1.M();
+       else
+	 largestJetMass=AK8Jet2.M();
+       
+       h1_AK8jet12_largestMass->Fill(largestJetMass);
+
        //dijet selection
        if( AK8Jet1.Pt() > 60 && fabs(AK8Jet1.Eta()) < 2.5 && 
 	   AK8Jet2.Pt() > 30 && fabs(AK8Jet2.Eta()) < 2.5 && 
@@ -481,6 +491,8 @@ GenAna::beginJob()
   h1_AK8jet4_pt = fs_->make<TH1F>("h1_AK8jet4_pt","h1_AK8jet4_pt",1000,0,10000);
   h1_AK8jet4_eta = fs_->make<TH1F>("h1_AK8jet4_eta","h1_AK8jet4_eta",100,-6,6);
   h1_AK8jet4_phi = fs_->make<TH1F>("h1_AK8jet4_phi","h1_AK8jet4_phi",100,-3.15,3.15);
+
+  h1_AK8jet12_largestMass  = fs_->make<TH1F>("h1_AK8jet12_largestMass","h1_AK8jet12_largestMass",1000,0,10000);
 
   h1_Mjjj = fs_->make<TH1F>("h1_Mjjj","h1_Mjjj",1000,0,10000);
   h1_Mjjj_match = fs_->make<TH1F>("h1_Mjjj_match","h1_Mjjj_match",1000,0,10000);
