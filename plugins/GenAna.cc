@@ -58,6 +58,7 @@
 #include "TMath.h"
 #include "TLorentzVector.h"
 #include "TTree.h"
+#include "TF1.h"
 
 
 // If the analyzer does not use TFileService, please remove
@@ -103,6 +104,9 @@ class GenAna : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 
   TH1F *h1_P1P2_Angle;
   TH1F *h1_P1P2_DeltaR;
+
+  TH1F *h1_Res1decay_cosThetaStar;
+  TH1F *h1_Res2decay_cosThetaStar;
 
   TH1F *h1_HT;
 
@@ -221,26 +225,29 @@ GenAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    if( genParticles.isValid() ) {
 
      bool P1found = false;      
+     //bool P2found = false;      
+     //bool P3found = false;      
 
      for( reco::GenParticleCollection::const_iterator it = genParticles->begin(); it != genParticles->end(); ++it ) {
 
        //Res1
-       if (it->pdgId()==9000021 && it->status()==62 && it->mother()->pdgId()==9000021 && it->numberOfDaughters()==2)
-	 {
-	   //cout << "pdgid, mass, ndaughter = " << it->pdgId() << ", " << it->mass() << ", " << it->numberOfDaughters() << endl;	 
-	   Res1.SetPtEtaPhiM(it->pt(),it->eta(),it->phi(),it->mass());	 
-	 }
+       // if (it->pdgId()==9000021 && it->status()==62 && it->mother()->pdgId()==9000021 && it->numberOfDaughters()==2)
+       // 	 {
+       // 	   //cout << "pdgid, mass, ndaughter = " << it->pdgId() << ", " << it->mass() << ", " << it->numberOfDaughters() << endl;
+       // 	   Res1.SetPtEtaPhiM(it->pt(),it->eta(),it->phi(),it->mass());	 
+       // 	 }
 
        //Res2
-       if (it->pdgId()==9000025 && it->status()==52 && it->mother()->pdgId()==9000025 && it->numberOfDaughters()==2 )
-	 {
-	   Res2.SetPtEtaPhiM(it->pt(),it->eta(),it->phi(),it->mass());	 
-	 }
+       // if (it->pdgId()==9000025 && it->status()==52 && it->mother()->pdgId()==9000025 && it->numberOfDaughters()==2 )
+       // 	 {
+       // 	   Res2.SetPtEtaPhiM(it->pt(),it->eta(),it->phi(),it->mass());	 
+       // 	 }
 
        //P3
        if (it->pdgId()==21 && it->status()==23 && it->mother()->pdgId()==9000021)
 	 {
 	   P3.SetPtEtaPhiM(it->pt(),it->eta(),it->phi(),it->mass());	 
+	   //P3found = true;
 	 }
 
        //P1 and P2 
@@ -250,6 +257,7 @@ GenAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	   if(P1found)
 	     {
 	       P2.SetPtEtaPhiM(it->pt(),it->eta(),it->phi(),it->mass());	 
+	       //P2found = true;
 	     }
 	   else
 	     {
@@ -258,6 +266,9 @@ GenAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	     }	   
 	 }
      }
+
+     Res2 = P1 + P2; 
+     Res1 = Res2 + P3; 
 
      if(Res1.M()>0)
        {
@@ -296,6 +307,32 @@ GenAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
      h1_P1P2_Angle->Fill(P1.Angle(P2.BoostVector()));
      h1_P1P2_DeltaR->Fill(P1.DeltaR(P2));
 
+     //CosTheta
+     TVector3 v_Res1_boost;
+     TVector3 v_Res2_boost;
+     v_Res1_boost = Res1.BoostVector();
+     v_Res2_boost = Res2.BoostVector();
+     //cout << v_Res2_boost.Mag() << " = " << Res2.P()/Res2.E() << endl;
+     
+     TLorentzVector Res2_restFrameRes1 = Res2;
+     TLorentzVector Res2_restFrameRes2 = Res2;
+     TLorentzVector P1_restFrameRes2 = P1;
+     TLorentzVector P2_restFrameRes2 = P2;
+     Res2_restFrameRes1.Boost(-v_Res1_boost);     
+     Res2_restFrameRes2.Boost(-v_Res2_boost);
+     P1_restFrameRes2.Boost(-v_Res2_boost);
+     P2_restFrameRes2.Boost(-v_Res2_boost);
+
+     h1_Res1decay_cosThetaStar->Fill( fabs(Res2_restFrameRes1.CosTheta()) );
+     h1_Res2decay_cosThetaStar->Fill( fabs(P1_restFrameRes2.CosTheta()) );
+
+     // cout << endl;
+     // cout << "Res2 pt shoudl be zero -> " << Res2_restFrameRes2.Pt() << endl; 
+     // cout << "P1 and P2 x momentum should be opposite -> " << P1_restFrameRes2.Px() << " , " << P2_restFrameRes2.Px() << endl;
+     // cout << "P1 and P2 y momentum should be opposite -> " << P1_restFrameRes2.Py() << " , " << P2_restFrameRes2.Py() << endl;
+     // cout << "P1 and P2 z momentum should be opposite -> " << P1_restFrameRes2.Pz() << " , " << P2_restFrameRes2.Pz() << endl;
+     // cout << "P1 cosTheta " << P1_restFrameRes2.CosTheta() << endl;
+     // cout << "P2 cosTheta " << P2_restFrameRes2.CosTheta() << endl;
 
      //HT 
      float HT_AK8Jets = 0;
@@ -466,6 +503,9 @@ GenAna::beginJob()
   h1_P1P2_Angle = fs_->make<TH1F>("h1_P1P2_Angle","h1_P1P2_Angle",1000,0,6.30);
   h1_P1P2_DeltaR = fs_->make<TH1F>("h1_P1P2_DeltaR","h1_P1P2_DeltaR",1000,0,6.30);
 
+  h1_Res1decay_cosThetaStar = fs_->make<TH1F>("h1_Res1decay_cosThetaStar","h1_Res1decay_cosThetaStar",100,0,1);
+  h1_Res2decay_cosThetaStar = fs_->make<TH1F>("h1_Res2decay_cosThetaStar","h1_Res2decay_cosThetaStar",100,0,1);
+
   h1_HT = fs_->make<TH1F>("h1_HT","h1_HT",1000,0,10000);
 
   h1_Mjj = fs_->make<TH1F>("h1_Mjj","h1_Mjj",1000,0,10000);
@@ -511,6 +551,7 @@ GenAna::beginJob()
 void 
 GenAna::endJob() 
 {
+
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
